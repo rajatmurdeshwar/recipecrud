@@ -34,7 +34,7 @@ public class RecipesRestController {
     }
 
     // add recipe to db
-    @PostMapping("/")
+    @PostMapping("/addRecipe")
     public ResponseEntity<Map<String, String>> addRecipe(@RequestBody Recipe theRecipe, HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
