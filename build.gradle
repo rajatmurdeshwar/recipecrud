@@ -13,6 +13,18 @@ java {
 	}
 }
 
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    archiveFileName = 'recipecrud.jar'
+}
+
 repositories {
 	mavenCentral()
 }
