@@ -11,19 +11,20 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.recipecrud.dao.UserDAO;
+import com.example.recipecrud.dao.UserRepository;
 import com.example.recipecrud.entity.User;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserDAO userDAO;
+    private final UserRepository userDAO;
 
-    public JwtAuthFilter(JwtUtil jwtUtil, UserDAO userDAO) {
+    public JwtAuthFilter(JwtUtil jwtUtil, UserRepository userDAO) {
         this.jwtUtil = jwtUtil;
         this.userDAO = userDAO;
     }
@@ -48,7 +49,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 // Fetch user from database
-                User user = userDAO.findByEmail(email);
+                Optional<User> user = userDAO.findByEmail(email);
  
                 // Validate token with user details
                 if (user != null && jwtUtil.validateToken(token)) {

@@ -1,10 +1,15 @@
 package com.example.recipecrud.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -13,12 +18,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is required")
     private String name;
+    @NotBlank(message = "Phone number is required")
+    @Size(min = 10, max = 15, message = "Phone number must be between 10-15 characters")
     private String phonenumber;
+
+    @NotBlank(message = "City is required")
     private String city;
 
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email is required")
     private String email;
 
+    @JsonIgnore
+    @NotBlank(message = "Password is required")
     private String password;
 
     public User(Long id, String name, String phonenumber, String city, String email, String password) {
