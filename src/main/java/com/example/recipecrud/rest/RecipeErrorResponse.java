@@ -41,7 +41,4 @@ public class RecipeErrorResponse {
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
-
-    
-    
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.recipecrud.JwtUtil;
 import com.example.recipecrud.dao.UserRepository;
+import com.example.recipecrud.entity.LoginRequest;
 import com.example.recipecrud.entity.User;
 
 @Service
@@ -33,10 +34,10 @@ public class AuthService {
         return "User registered successfully!";
     }
 
-    public String login(User user) {
-        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+    public String login(LoginRequest request) {
+        Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
 
-        if (existingUser.isEmpty() || !passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
+        if (existingUser.isEmpty() || !passwordEncoder.matches(request.getPassword(), existingUser.get().getPassword())) {
             throw new IllegalArgumentException("Invalid email or password");
         }
 

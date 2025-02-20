@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.recipecrud.dao.UserRepository;
+import com.example.recipecrud.entity.LoginRequest;
 import com.example.recipecrud.entity.User;
 import com.example.recipecrud.service.AuthService;
 
@@ -78,7 +79,7 @@ public class AuthServiceTest {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(IllegalArgumentException.class, 
-            () -> authService.login(new User(1L, "John Doe", "1234567890", "New York", "test@example.com", "password123")
+            () -> authService.login(new LoginRequest( "test@example.com", "password123")
             ));
 
         assertEquals("Invalid email or password", exception.getMessage());

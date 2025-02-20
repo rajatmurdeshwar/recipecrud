@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.recipecrud.entity.LoginRequest;
 import com.example.recipecrud.entity.User;
 import com.example.recipecrud.service.AuthService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,23 +29,17 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody User user) {
-        try {
-            String message = authService.signUp(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(message);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<String> signUp(@Valid @RequestBody User user) {
+        String message = authService.signUp(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
-        try {
-            String token = authService.login(user);
-            return ResponseEntity.ok(Map.of("token", token));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        }
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginRequest request) {
+        String token = authService.login(request);
+        return ResponseEntity.ok(Map.of("token", token));
+        
     }
 
     @PostMapping("/userDetails")
@@ -53,12 +50,8 @@ public class AuthRestController {
         }
 
         String token = authHeader.substring(7);
-        try {
-            Map<String, Object> userDetails = authService.getUserDetails(token);
-            return ResponseEntity.ok(userDetails);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
-        }
+        Map<String, Object> userDetails = authService.getUserDetails(token);
+        return ResponseEntity.ok(userDetails);
     }
 }
 
