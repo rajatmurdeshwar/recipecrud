@@ -29,9 +29,9 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@Valid @RequestBody User user) {
-        String message = authService.signUp(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+    public ResponseEntity<Map<String,String>> signUp(@Valid @RequestBody User user) {
+        Map<String, String> response = authService.signUp(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
     }
 

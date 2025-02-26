@@ -25,13 +25,15 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public String signUp(User user) {
+    public Map<String, String> signUp(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "User registered successfully!";
+        String token = jwtUtil.generateToken(user.getEmail());
+
+        return Map.of("token", token);
     }
 
     public String login(LoginRequest request) {
